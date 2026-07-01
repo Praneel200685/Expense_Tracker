@@ -77,3 +77,30 @@ def get_budget_advice(
             "savings": income * (savings_pct / 100)
         }
     }
+# --- TRANSACTION ENDPOINTS ---
+
+@app.post("/transactions/")
+def create_transaction(transaction: Transaction, session: Session = Depends(get_session)):
+    """Log a new transaction."""
+    user = session.get(User, transaction.user_id)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+        
+    session.add(transaction)
+    session.commit()
+    session.refresh(transaction)
+    return transaction
+
+@app.get("/users/{user_id}/transactions")
+def read_user_transactions(user_id: int, session: Session = Depends(get_session)):
+    """Fetch all transactions for a user."""
+    statement = select(Transaction).where(Transaction.user_id == user_id)
+    transactions = session.exec(statement).all()
+    return transactions
+import uvicorn
+
+# ... your existing code (app = FastAPI(), etc) ...
+
+if __name__ == "__main__":
+    # 0.0.0.0 is the magic IP that allows external traffic to hit your app
+    uvicorn.run("main:app", host="0.0.0.0", port=10000, reload=False)
