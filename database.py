@@ -1,12 +1,15 @@
+import os
 from sqlmodel import SQLModel, create_engine
-# Import your models so SQLModel knows they exist
 from models import User, Transaction, Budget
 
-# The connection string to your local MySQL Docker container
-DATABASE_URL = "mysql+pymysql://root:secret@localhost:3306/expensedb"
+# 1. Update the URL to use pymysql instead of mysql-connector
+# Replace the prefix in your terminal export as well:
+# export DATABASE_URL="mysql+pymysql://avnadmin:AVNS_VeHXCLFoo_yKIqy5COO@mysql-2dafed9-praneel-a750.l.aivencloud.com:17687/defaultdb"
 
-# echo=True prints the generated SQL to your terminal
-engine = create_engine(DATABASE_URL, echo=True)
+DATABASE_URL = os.environ.get("DATABASE_URL")
+
+# 2. Use a simpler engine creation
+engine = create_engine(DATABASE_URL)
 
 def create_db_and_tables():
     print("Initializing database schema...")
