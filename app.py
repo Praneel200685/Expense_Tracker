@@ -4,7 +4,7 @@ import requests
 # Set the configuration for the web page
 st.set_page_config(page_title="AI Expense Tracker", page_icon="💸", layout="centered")
 
-BASE_URL = "expensetracker-production-c898.up.railway.app"
+BASE_URL = "https://expensetracker-production-c898.up.railway.app"
 
 # Initialize Session State
 if "logged_in" not in st.session_state:
