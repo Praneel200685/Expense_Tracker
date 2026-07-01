@@ -104,3 +104,15 @@ import uvicorn
 if __name__ == "__main__":
     # 0.0.0.0 is the magic IP that allows external traffic to hit your app
     uvicorn.run("main:app", host="0.0.0.0", port=10000, reload=False)
+from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI()
+
+# Add this block:
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allows all headers
+)
